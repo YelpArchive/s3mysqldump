@@ -383,6 +383,12 @@ def make_option_parser():
         help='extra args to pass to mysqldump (e.g. "-e --comment -vvv").'
         ' Use -m (see above) for passwords and other credentials.')
     option_parser.add_option(
+        '--no-upload-empty-file-if-no-new-data',
+        dest='upload_empty_file_if_no_new_data',
+        default=True, action='store_false',
+        help=('If there are no new rows in a table, upload no files rather'
+              ' than an empty file. Off by default.'))
+    option_parser.add_option(
         '-q', '--quiet', dest='quiet', default=False,
         action='store_true',
         help="Don't print to stderr")
@@ -400,6 +406,10 @@ def make_option_parser():
         help=('Output single-row INSERT statements, and turn off locking, for'
               ' easy data processing. Equivalent to -M "%s"'
               % ' '.join(SINGLE_ROW_FORMAT_OPTS)))
+    option_parser.add_option(  # default for this set in --no-* version
+        '--upload-empty-file-if-no-new-data', action='store_true',
+        help=('If there are no new rows in a table, upload an empty file'
+              ' instead of uploading no file. On by default.'))
     option_parser.add_option(
         '--utc', dest='utc', default=False, action='store_true',
         help='Use UTC rather than local time to process s3_uri_format')
